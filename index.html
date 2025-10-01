@@ -29,6 +29,31 @@
       <h1>Inventario de Bodys</h1>
     </header>
 
+    <!-- Estadísticas rápidas -->
+    <div id="stats" class="stats-container">
+      <div class="stat">
+        <h3>Total Bodys</h3>
+        <p id="totalBodies">0</p>
+        <div class="progress-bar">
+          <div id="totalProgress" class="progress-fill"></div>
+        </div>
+      </div>
+      <div class="stat">
+        <h3>Disponibles</h3>
+        <p id="availableBodies">0</p>
+        <div class="progress-bar">
+          <div id="availableProgress" class="progress-fill"></div>
+        </div>
+      </div>
+      <div class="stat">
+        <h3>Agotados</h3>
+        <p id="soldOutBodies">0</p>
+        <div class="progress-bar">
+          <div id="soldOutProgress" class="progress-fill"></div>
+        </div>
+      </div>
+    </div>
+
     <!-- Barra de búsqueda -->
     <input type="text" id="search" placeholder="Buscar por referencia o color">
 
@@ -51,6 +76,13 @@
 
   <!-- Contenedor para notificaciones -->
   <div id="toast-container"></div>
+
+  <!-- Modal para ver imagen grande -->
+  <div id="imageModal" class="image-modal">
+    <span id="closeModal" class="close">&times;</span>
+    <img class="modal-content" id="modalImg">
+    <div id="caption"></div>
+  </div>
 
   <script src="script.js"></script>
 </body>
