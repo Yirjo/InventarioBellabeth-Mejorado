@@ -5,14 +5,36 @@ body {
   background: url("fondo.jpg") no-repeat center center fixed;
   background-size: cover;
   color: #333;
+  transition: background 0.3s, color 0.3s;
+}
+
+/* Modo oscuro */
+body.dark {
+  background: url("fondo.jpg") no-repeat center center fixed;
+  background-size: cover;
+  color: #ddd;
 }
 
 #main-content {
-  margin-left: 220px;
+  margin-left:0;
   padding: 20px;
-  background: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.7); /* menos opaco para ver más el fondo */
   min-height: 100vh;
   box-sizing: border-box;
+  transition: transform 0.3s, background 0.3s;
+}
+
+body.dark #main-content { background: rgba(30,30,30,0.7); }
+
+/* Overlay */
+#overlay {
+  display: none;
+  position: fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background: rgba(0,0,0,0.4);
+  z-index:1040;
+  transition: opacity 0.3s;
 }
 
 /* Header */
@@ -22,6 +44,8 @@ header {
   border-bottom: 2px solid #ddd;
 }
 
+body.dark header { border-color:#555; }
+
 header .logo {
   max-width: 100px;
   height: auto;
@@ -30,31 +54,40 @@ header .logo {
   margin-bottom: 10px;
 }
 
-/* Formulario */
+/* --- Formulario moderno Material --- */
 form {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 15px;
   justify-content: center;
   margin: 20px 0;
-  padding: 15px;
-  border-radius: 10px;
-  background: rgba(255,255,255,0.95);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  padding: 25px;
+  border-radius: 15px;
+  background: rgba(255,255,255,0.75); /* menos opaco */
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
 }
+
+body.dark form { background: rgba(30,30,30,0.75); }
 
 form input, form button {
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 1rem;
-  transition: all 0.2s;
+  padding: 15px 18px;
+  border-radius: 12px;
+  border: none;
+  font-size: 1.1rem;
+  transition: all 0.3s;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
+form input {
+  background: #fff;
+}
+
+body.dark form input { background: rgba(50,50,50,0.9); color:#ddd; }
+
 form input:focus {
-  border-color: #4CAF50;
-  outline: none;
-  box-shadow: 0 0 5px rgba(76,175,80,0.5);
+  box-shadow: 0 8px 20px rgba(76,175,80,0.4);
+  transform: translateY(-2px);
 }
 
 form button {
@@ -66,33 +99,67 @@ form button {
   align-items:center;
   justify-content:center;
   gap:5px;
+  font-weight:bold;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: all 0.3s;
 }
 
 form button:hover {
-  transform: scale(1.05);
-  opacity:0.9;
+  transform: scale(1.05) translateY(-2px);
+  opacity:0.95;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
 }
 
-/* Sidebar */
+/* --- Búsqueda moderna Material --- */
+#search {
+  width:100%;
+  max-width:450px;
+  display:block;
+  margin: 10px auto 25px auto;
+  padding:14px 20px;
+  border-radius:12px;
+  border:none;
+  font-size:1.1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: all 0.3s;
+}
+
+#search:focus {
+  box-shadow: 0 8px 20px rgba(76,175,80,0.4);
+  transform: translateY(-2px);
+  outline:none;
+}
+
+/* --- Sidebar gris transparente --- */
 #sidebar {
   position: fixed;
-  left:0; top:0;
+  top:0;
+  left:-250px;
   width:220px;
   height:100%;
-  background:#2c3e50;
+  background: rgba(80,80,80,0.75); /* gris semi-transparente */
   color:white;
   padding:20px;
   box-sizing:border-box;
+  transition: transform 0.3s, background 0.3s;
+  z-index:1050;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-right: 1px solid rgba(255,255,255,0.2);
+  box-shadow: 2px 0 12px rgba(0,0,0,0.2);
 }
+
+#sidebar.show { transform: translateX(250px); }
 
 #sidebar h2 { margin-top:0; font-size:1.5rem; }
 
+/* Botones sidebar */
 #sidebar button {
   display:block;
   width:100%;
   margin:10px 0;
   padding:12px;
-  background:#34495e;
+  background: rgba(100,100,100,0.6); /* gris armonioso */
   border:none;
   color:white;
   cursor:pointer;
@@ -105,9 +172,25 @@ form button:hover {
   gap:10px;
 }
 
+/* Color al hacer hover */
 #sidebar button:hover {
-  background:#4CAF50;
+  background: rgba(130,130,130,0.85); /* gris más claro al pasar el mouse */
   padding-left:20px;
+}
+
+/* --- Botón hamburguesa --- */
+#menuToggle {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index:1101;
+  background:#4CAF50;
+  color:white;
+  border:none;
+  padding:10px 12px;
+  border-radius:6px;
+  font-size:1.5rem;
+  cursor:pointer;
 }
 
 /* Cards */
@@ -117,8 +200,11 @@ form button:hover {
   box-shadow:0 4px 12px rgba(0,0,0,0.15);
   text-align:center;
   position:relative;
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+  background: rgba(255,255,255,0.7); /* menos opaco */
 }
+
+body.dark .card { background: rgba(50,50,50,0.7); }
 
 .card.pop {
   animation: pop 0.3s ease forwards;
@@ -134,24 +220,9 @@ form button:hover {
 
 .card img {
   max-width:100%;
-  height:150px;
+  height:180px;
   object-fit:cover;
   border-radius:8px;
-}
-
-/* Stock bar */
-.stock-bar {
-  height:10px;
-  border-radius:5px;
-  margin-top:8px;
-  background:#d1d1d1;
-  overflow:hidden;
-}
-
-.stock-fill {
-  height:100%;
-  border-radius:5px;
-  transition:width 0.3s;
 }
 
 /* Card buttons */
@@ -163,7 +234,7 @@ form button:hover {
 }
 
 .card-buttons button {
-  padding:8px 12px;
+  padding:10px 14px;
   border-radius:6px;
   border:none;
   cursor:pointer;
@@ -171,6 +242,7 @@ form button:hover {
   display:flex;
   align-items:center;
   gap:5px;
+  font-size:1.1rem;
 }
 
 .card-buttons button:hover { transform:scale(1.05); }
@@ -179,19 +251,7 @@ form button:hover {
 .card-buttons button:nth-child(2){ background:#e67e22; color:white; } /* Agotado */
 .card-buttons button:nth-child(3){ background:#e74c3c; color:white; } /* Eliminar */
 
-.sold-out { color:red; font-weight:bold; font-size:1rem; }
-
-/* Search */
-#search {
-  width:100%;
-  max-width:400px;
-  display:block;
-  margin:0 auto 20px auto;
-  padding:12px;
-  border-radius:8px;
-  border:1px solid #ccc;
-  font-size:1rem;
-}
+.sold-out { color:red; font-weight:bold; font-size:1.1rem; }
 
 /* Botón flotante */
 #addButton {
@@ -203,7 +263,7 @@ form button:hover {
   border-radius:50%;
   background:#4CAF50;
   color:white;
-  font-size:2rem;
+  font-size:2.2rem;
   border:none;
   cursor:pointer;
   box-shadow:0 4px 8px rgba(0,0,0,0.3);
@@ -216,33 +276,12 @@ form button:hover {
 
 #addButton:hover { transform:scale(1.1); background:#45a049; }
 
-/* Toast */
-#toast-container { position:fixed; bottom:80px; right:20px; z-index:2000; }
-
-.toast {
-  background: rgba(0,0,0,0.85);
-  color: #fff;
-  padding:12px 20px;
-  border-radius:8px;
-  margin-top:10px;
-  min-width:180px;
-  text-align:center;
-  opacity:0;
-  transform:translateY(20px);
-  animation: slideIn 0.4s forwards, fadeOut 0.4s 2.5s forwards;
-  font-size:0.95rem;
-}
-
-@keyframes slideIn { to { opacity:1; transform:translateY(0); } }
-@keyframes fadeOut { to { opacity:0; transform:translateY(-20px); } }
-
-/* Media queries para móvil */
+/* Media queries móvil */
 @media screen and (max-width:768px){
-  #sidebar{ width:100%; height:auto; position:relative; flex-wrap:wrap; justify-content:space-around; padding:10px 0; }
-  #sidebar button{ width:auto; margin:5px; text-align:center; padding:10px 15px; }
-  #main-content{ margin-left:0; padding:15px; }
   form{ flex-direction:column; align-items:stretch; }
-  form input, form button{ width:100%; }
+  form input, form button{ width:100%; font-size:1.1rem; }
   #lista{ display:flex; flex-direction:column; gap:15px; }
-  #addButton{ bottom:20px; right:20px; width:55px; height:55px; font-size:1.8rem; }
+  .card img{ height:200px; }
+  #addButton{ bottom:20px; right:20px; width:60px; height:60px; font-size:2.4rem; }
+  .card-buttons button{ font-size:1.3rem; padding:12px 16px; }
 }

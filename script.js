@@ -4,42 +4,53 @@ const form = document.getElementById("formBody");
 const lista = document.getElementById("lista");
 const searchInput = document.getElementById("search");
 const addButton = document.getElementById("addButton");
-
+const themeToggle = document.getElementById("themeToggle");
 form.style.display = "none";
 
-// --- Toast ---
-function showToast(msg){
-  const toast = document.createElement("div");
-  toast.classList.add("toast");
-  toast.innerHTML = `<i class="fas fa-info-circle"></i> ${msg}`;
-  document.getElementById("toast-container").appendChild(toast);
-  setTimeout(()=>toast.remove(),3000);
-}
+// Sidebar toggle
+const menuToggle = document.getElementById("menuToggle");
+const sidebar = document.getElementById("sidebar");
+const overlay = document.getElementById("overlay");
 
-// --- Botón flotante ---
-addButton.addEventListener("click", ()=> {
-  form.style.display = form.style.display==="none"?"flex":"none";
-  if(form.style.display==="flex") form.scrollIntoView({behavior:"smooth"});
+menuToggle.addEventListener("click", ()=>{
+  sidebar.classList.toggle("show");
+  overlay.classList.toggle("show");
+  if(sidebar.classList.contains("show")){
+    document.getElementById("main-content").style.transform = "translateX(220px)";
+  } else {
+    document.getElementById("main-content").style.transform = "translateX(0)";
+  }
 });
 
-// --- Guardar inventario ---
-function guardarInventario(){ localStorage.setItem("inventario",JSON.stringify(inventario)); }
+overlay.addEventListener("click", ()=>{
+  sidebar.classList.remove("show");
+  overlay.classList.remove("show");
+  document.getElementById("main-content").style.transform = "translateX(0)";
+});
 
-// --- Mostrar inventario ---
-function mostrarInventario(filtro=null){
-  lista.innerHTML="";
+// Tema oscuro automático según hora
+const hour = new Date().getHours();
+if(hour>=19 || hour<=6){ document.body.classList.add("dark"); }
+
+themeToggle.addEventListener("click", ()=>{
+  document.body.classList.toggle("dark");
+});
+
+// Mostrar inventario
+function mostrarInventario(filtro){
+  lista.innerHTML = "";
   inventario.forEach((body,index)=>{
     if(filtro==="disponibles" && body.cantidad===0) return;
     if(filtro==="agotados" && body.cantidad>0) return;
 
-    const card=document.createElement("div");
+    const card = document.createElement("div");
     card.classList.add("card","pop");
 
     let stockColor="#28a745";
     if(body.cantidad===0) stockColor="#dc3545";
     else if(body.cantidad<=3) stockColor="#ffc107";
 
-    card.innerHTML=`
+    card.innerHTML = `
       <h3>${body.nombre}</h3>
       <p>Color: ${body.color}</p>
       <p>Cantidad: ${body.cantidad}</p>
@@ -56,7 +67,24 @@ function mostrarInventario(filtro=null){
   });
 }
 
-// --- Agregar ---
+// Guardar inventario
+function guardarInventario(){ localStorage.setItem("inventario", JSON.stringify(inventario)); }
+
+// Toast
+function showToast(msg){
+  const toast=document.createElement("div");
+  toast.className="toast";
+  toast.textContent=msg;
+  document.getElementById("toast-container").appendChild(toast);
+  setTimeout(()=>toast.remove(),3000);
+}
+
+// Añadir body
+addButton.addEventListener("click", ()=>{
+  form.style.display=form.style.display==="none"?"flex":"none";
+});
+
+// Form submit
 form.addEventListener("submit", e=>{
   e.preventDefault();
   const nombre=document.getElementById("nombre").value;
@@ -76,7 +104,7 @@ form.addEventListener("submit", e=>{
   reader.readAsDataURL(fotoInput.files[0]);
 });
 
-// --- Editar ---
+// Editar
 function editarBodyUI(index){
   const body=inventario[index];
   const nuevoColor=prompt("Editar color:",body.color);
@@ -88,7 +116,7 @@ function editarBodyUI(index){
   showToast("Body editado ✏️");
 }
 
-// --- Agotado ---
+// Agotado
 function marcarAgotado(index){
   inventario[index].cantidad=0;
   guardarInventario();
@@ -96,7 +124,7 @@ function marcarAgotado(index){
   showToast("Body marcado como Agotado ❌");
 }
 
-// --- Eliminar ---
+// Eliminar
 function eliminarBody(index){
   inventario.splice(index,1);
   guardarInventario();
@@ -104,7 +132,7 @@ function eliminarBody(index){
   showToast("Body eliminado 🗑️");
 }
 
-// --- Búsqueda ---
+// Búsqueda
 searchInput.addEventListener("input", ()=>{
   const q=searchInput.value.toLowerCase();
   lista.innerHTML="";
@@ -135,10 +163,10 @@ searchInput.addEventListener("input", ()=>{
   });
 });
 
-// --- Sidebar filtros ---
-function mostrarTodo(){ mostrarInventario(); }
-function filtrarDisponibles(){ mostrarInventario("disponibles"); }
-function filtrarAgotados(){ mostrarInventario("agotados"); }
+// Filtros sidebar
+function mostrarTodo(){ mostrarInventario(); sidebar.classList.remove("show"); overlay.classList.remove("show"); document.getElementById("main-content").style.transform="translateX(0)"; }
+function filtrarDisponibles(){ mostrarInventario("disponibles"); sidebar.classList.remove("show"); overlay.classList.remove("show"); document.getElementById("main-content").style.transform="translateX(0)"; }
+function filtrarAgotados(){ mostrarInventario("agotados"); sidebar.classList.remove("show"); overlay.classList.remove("show"); document.getElementById("main-content").style.transform="translateX(0)"; }
 
-// --- Inicializar ---
+// Inicializar
 mostrarInventario();
