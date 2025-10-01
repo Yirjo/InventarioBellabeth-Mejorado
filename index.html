@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Inventario de Bodys</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <!-- Sidebar / Menú -->
+  <aside id="sidebar">
+    <h2>Menú</h2>
+    <button onclick="mostrarTodo()"><i class="fas fa-home"></i> Inicio</button>
+    <button onclick="filtrarDisponibles()"><i class="fas fa-check-circle"></i> Bodys Disponibles</button>
+    <button onclick="filtrarAgotados()"><i class="fas fa-times-circle"></i> Bodys Agotados</button>
+  </aside>
+
+  <!-- Contenido principal -->
+  <div id="main-content">
+    <header>
+      <img src="logo.png" alt="Logo de la tienda" class="logo">
+      <h1>Inventario de Bodys</h1>
+    </header>
+
+    <!-- Barra de búsqueda -->
+    <input type="text" id="search" placeholder="Buscar por referencia o color">
+
+    <!-- Formulario para agregar bodys -->
+    <form id="formBody">
+      <input type="text" id="nombre" placeholder="Referencia" required>
+      <input type="text" id="color" placeholder="Color" required>
+      <input type="number" id="cantidad" placeholder="Cantidad" required min="0">
+      <input type="file" id="foto" accept="image/*" required>
+      <button type="submit"><i class="fas fa-plus"></i> Agregar Body</button>
+    </form>
+
+    <!-- Lista de inventario -->
+    <h2>Lista de Inventario</h2>
+    <div id="lista"></div>
+  </div>
+
+  <!-- Botón flotante -->
+  <button id="addButton"><i class="fas fa-plus"></i></button>
+
+  <!-- Contenedor para notificaciones -->
+  <div id="toast-container"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
